@@ -106,3 +106,62 @@ Configure docker
 16. Remove container --> docker stop container-name or id --> docker rm container-name or id
 17. Remove image --> docker rmi image name or image id 
 18. Dockerfile --> Is a definition for docker image 
+
+
+11/15/2022          Tuesday 
+
+Jenkins/Docker/Tomcat cont. 
+
+1. SSH into docker vm and create /opt/docker dir 
+2. create dockeradmin user --> useradd dockeradmin and passwd dockeradmin
+3. cat /etc/passwd 
+4. cat /etc/group 
+5. usermod -aG docker dockeradmin --> Adds dockeradmin to docker group 
+6. In Jenkins server --> Install Publish_over_ssh plugin
+7. Configure System --> SSH server and pass all required fields. 
+8. In Docker VM --> vim /etc/ssh/sshd_config 
+    # To disable tunneled clear text passwords, change to no here!
+    PasswordAuthentication yes
+    #PermitEmptyPasswords no
+    #PasswordAuthentication no
+9. service sshd reload 
+10. Jenkins GUI --> new item --> Name: deploy_on_container --> Source files: **/*.war
+Remove prefix: /webapp/target --> Remote directory: //opt//docker 
+11. Docker VM --> sudo su - --> chown -R dockeradmin:dockeradmin /opt/docker 
+12. Docker VM --> Dockerfile 
+13. docker build -t register-image .
+14. docker run -d --name register-container -p 8080:8080 register-image
+15. Jenkins GUI --> Exec command --> cd /opt/docker;
+                    docker build -t register-image .;
+                    docker stop register-container;
+                    docker rm register-container;
+                    docker run -d --name register-container -p 8080:8080 register-image;
+
+
+Ansible 
+1. Configuration Management/Deployment tool 
+2. Built on top of Python 
+3. It's agentless --> all you need is ssh keys 
+4. Make sure Python is installed 
+5. pip3 install ansible 
+6. useradd ansadmin 
+7. passwd ansadmin
+8. install docker in the vm 
+9. usermod -aG docker ansadmin --> adds ansadmin user to docker group 
+10. id ansadmin
+11. visudo 
+    ## Allow root to run any commands anywhere 
+    root    ALL=(ALL)       ALL
+    ansadmin ALL=(ALL)       NOPASSWD:ALL
+12. vim /etc/ssh/sshd_config
+        # To disable tunneled clear text passwords, change to no here!
+        PasswordAuthentication yes
+        #PermitEmptyPasswords no
+        #PasswordAuthentication no
+13. yum install docker -y 
+14. ssh-keygen 
+15. su - ansadmin
+16. ssh-copy-id <private ip of docker vm>
+17. ansible all -m ping --> test connection
+18. mkdir /etc/ansible 
+19. vim hosts --> add private ip of docker vm 

@@ -1,0 +1,9 @@
+--- 
+- hosts: all 
+  become: true 
+
+  tasks: 
+  - name: Build docker image 
+    command: docker build -t register-app-image .
+    args:
+      chdir: /opt/docker
