@@ -1,0 +1,53 @@
+11/19/2022 Saturday 
+
+Day offs 
+
+1. Nov. 24, 29 
+   Dec. 3,4,6,8,13,15,17,18
+
+Kubernetes (K8S)
+
+1. Kubernetes developed and introduced by Google now owned by Cloud Native Computing Foundation (CNCF)
+2. Kubernetes is Greek word means helmsman. 
+3. Kubernetes is an Open source tool. 
+4. In AWS we will use EKS (Elastic Kubernetes Service). GCP (Google Cloud Platform) - GKE 
+Azure - AKS 
+
+Configure Kubernetes cluster with eksctl 
+
+1. Upgrade aws cli --> https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+2. kubectl --> client, agent, api for Kubernetes
+3. kubectl installation --> https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
+   curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.22.15/2022-10-31/bin/linux/amd64/kubectl
+   openssl sha1 -sha256 kubectl
+   chmod +x ./kubectl
+   mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+4. eksctl installation --> https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html
+    curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+    sudo mv /tmp/eksctl /usr/local/bin
+    eksctl version
+5. Create EKS cluster 
+    5.1. Create IAM role and attach Administrator policy
+    5.2. Attach the role to k8s-bootsrap instance 
+    5.3. Run cluster config file --> eksctl create cluster -f eks-cluster.yaml
+6. EKS Control Plane --> Basically it's a master node for EKS. Just Managed by AWS 
+7. EKS node group --> Worker nodes --> All the resources run node group (worker nodes)
+8. Node group or Worker nodes are regular ec2 instances --> difference they come with 
+EKS optimized AMIs 
+9. kubectl get nodes --> to list worker nodes 
+10. Create simple nginx pod --> kubectl run simple-nginx --image=nginx --port=80
+11. kubectl get pods --> list all pods 
+12. Container runs inside the pod and gets all resources, e.g. cpu, memory, IP from pod 
+13. kubectl describe pods simple-nginx
+14. kubectl expose pod simple-nginx --port=80 --type=LoadBalancer
+15. Grab LoadBalancer DNS name and paste in browser
+
+difference between pod and deployment. If pod goes down or deleted Kubernetes won't 
+recreate it but deployment is completely oppsite. 
+Deployment behind the scene creates a Replica Sets. 
+
+16. Check pods running on ec2 vm (Node group/Worker nodes) --> kubectl get pods -o wide 
+17. kubectl describe po <pod name>
+18. kubectl logs <pod name>
+19. kubectl exec -it <pod name> /bin/bash
+20. eksctl delete cluster -f eks-cluster.yaml
