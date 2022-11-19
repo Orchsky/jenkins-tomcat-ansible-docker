@@ -139,7 +139,7 @@ Remove prefix: /webapp/target --> Remote directory: //opt//docker
 
 
 Ansible 
-1. Configuration Management/Deployment tool 
+1. Configuration Management/Deployment tool and it uses yml/yaml format 
 2. Built on top of Python 
 3. It's agentless --> all you need is ssh keys 
 4. Make sure Python is installed 
@@ -165,3 +165,12 @@ Ansible
 17. ansible all -m ping --> test connection
 18. mkdir /etc/ansible 
 19. vim hosts --> add private ip of docker vm 
+
+
+11/17/2022 Thursday
+
+1. ansible all -m ping (Ad hoc command) --> Checks the connectivity from Ansible controller to Ansible 
+managed VMs 
+2. ssh-copy-id <private ip>
+
+Scenario: How do you share docker images across your team? Dockerhub
