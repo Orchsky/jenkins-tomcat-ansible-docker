@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: orchsky-registerapp
+spec:
+  selector:
+    matchLabels:
+      app: orchsky-app
+  replicas: 2
+
+  template: 
+    metadata:
+      labels:
+        app: orchsky-app
+    spec:
+      containers:
+      - name: orchsky-app-container
+        image: orchsky/register-app-image
+        imagePullPolicy: Always 
+        ports:
+        - containerPort: 8080
