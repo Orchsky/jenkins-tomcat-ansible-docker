@@ -1,0 +1,27 @@
+---
+- name: Crate pods in EKS cluster
+  hosts: kubernetes
+  user: root
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+  tasks:
+
+  - name: show me
+    shell: whoami
+    register: ks_user
+
+  - name: print it
+    debug:
+      msg: "{{ ks_user.stdout_lines }}"
+
+
+
+  - name: create a deployment
+    command: /root/bin/kubectl apply -f registerapp-deploy-ks.yaml
+
+  - name: create a rolling update in order latest changes get reflected
+    command: /root/bin/kubectl rollout restart deployment.v1.apps/orchsky-registerapp
+
+  - name: create a service
+    command: /root/bin/kubectl apply -f registerapp-service.yaml

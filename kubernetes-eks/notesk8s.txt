@@ -51,3 +51,5 @@ Deployment behind the scene creates a Replica Sets.
 18. kubectl logs <pod name>
 19. kubectl exec -it <pod name> /bin/bash
 20. eksctl delete cluster -f eks-cluster.yaml
+
+
